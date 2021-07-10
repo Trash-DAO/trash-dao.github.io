@@ -27,8 +27,8 @@
     "postbuild": "shx cp -R build ./docs",
     "commit-changes": "yarn build && git add . -A && git commit -m publish",
     "commit-version": "npm version patch && yarn build && git add . -A && git commit -m bump-version",
-    "//publish": "We push twice because github pages has some trouble updating the index file, so we push the changes we want, then bump the version, then push again",
-    "publish": "yarn commit-changes && yarn commit-version && git push",
+    "//publish-website": "We push twice because github pages has some trouble updating the index file, so we push the changes we want, then bump the version, then push again",
+    "publish-website": "yarn commit-changes && yarn commit-version && git push",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

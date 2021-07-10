@@ -20,7 +20,7 @@ export function TrashCan() {
   return (
     <div>
       <h2>Trash Can</h2>
-      <div>Rinkeby Trash Can Contract: {trashCanAddress}</div>
+      <div>Rinkeby Trash Can Contract: {trashCanAddress} <a target="_blank" rel="noreferrer" href={`https://rinkeby.etherscan.io/address/${trashCanAddress}`}>Etherescan</a></div>
       {
         pendingTx ?
           "Pending Transaction..." :

@@ -12,7 +12,7 @@ export function NftFaucet() {
   return (
     <div>
       <h2>NFT Faucet</h2>
-      <div>Rinkeby NFT Faucet Contract: {nftFaucetAddress}</div>
+      <div>Rinkeby NFT Faucet Contract: {nftFaucetAddress} <a target="_blank" rel="noreferrer" href={`https://rinkeby.etherscan.io/address/${nftFaucetAddress}`}>Etherescan</a></div>
       {
         pendingTx ?
           "Pending Transaction..." :

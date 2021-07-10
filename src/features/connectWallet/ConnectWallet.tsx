@@ -21,7 +21,7 @@ export function ConnectWallet() {
       {loading ?
         "Loading..." :
         connected ?
-          <><span>{network}</span> <span>{address}</span></>
+          <><span>{network}</span> <span>{address}</span> <a target="_blank" rel="noreferrer" href={`https://rinkeby.etherscan.io/address/${address}`}>Etherescan</a></>
           :
           <button onClick={() => dispatch(connectWalletAsync())}>Connect Wallet</button>
       }
