@@ -5,7 +5,7 @@ declare global {
   interface Window { ethereum: any; }
 }
 
-export const trashCanAddress = "0x561b57fead41483cbc8b60e813b74b25a7d3e54d";
+export const trashCanAddress = "0x370Eff7d2Ac0ACf3E7713Ec8beC8079e825EB0d4";
 
 const nftAbi = [
   "function safeTransferFrom(address _from, address _to, uint256 _tokenId)",
