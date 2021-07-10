@@ -6,7 +6,7 @@ declare global {
   interface Window { ethereum: any; }
 }
 
-export const nftFaucetAddress = "0x4D786cbecf963Ca87dd3456cB1638AB005C69f7a";
+export const nftFaucetAddress = "0x5a3b5aD2397A92a6Ff417489A24B16edEc7bC418";
 
 let nftFaucetContract: ethers.Contract;
 const getNftFaucetContract = () => {
