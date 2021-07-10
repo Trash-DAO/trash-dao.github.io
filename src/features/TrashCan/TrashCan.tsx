@@ -10,11 +10,11 @@ export function TrashCan() {
   const dispatch = useAppDispatch();
   const [contractAddress, setContractAddress] = useState(nftFaucetAddress);
   const handleInputContractAddress = (event: any) => {
-    setContractAddress(event.target.value);
+    setContractAddress(event.target.value.trim());
   };
   const [tokenId, setTokenId] = useState("");
   const handleInputTokenId = (event: any) => {
-    setTokenId(event.target.value);
+    setTokenId(event.target.value.trim());
   };
 
   return (

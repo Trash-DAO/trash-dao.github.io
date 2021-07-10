@@ -25,9 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "postbuild": "shx rm -rf docs && shx cp -R build ./docs",
-    "commit-changes": "yarn build && git add . -A && git commit -m publish",
-    "commit-version": "npm version patch && yarn build && git add . -A && git commit -m bump-version",
-    "//publish-website": "We push twice because github pages has some trouble updating the index file, so we push the changes we want, then bump the version, then push again",
+    "commit-changes": "yarn build && git add . -A && git commit -m \"Changes before version bump\"",
+    "commit-version": "npm version patch && yarn build && git add . -A && git commit -m \"Build with bumped version\"",
     "publish-website": "yarn commit-changes && yarn commit-version && git push",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
