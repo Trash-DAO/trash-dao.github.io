@@ -10,6 +10,7 @@ export interface NftMint {
 export interface NftFaucetState {
   mints: NftMint[];
   pendingTx: boolean;
+  error?: string;
 }
 
 const initialState: NftFaucetState = {
@@ -29,8 +30,8 @@ export const mintAsync = createAsyncThunk(
       alreadyListening = true;
     }
     const tx = await mint();
-    const receipt = await tx.wait();
-    return receipt.transactionHash;
+    // const receipt = await tx.wait();
+    // return receipt.transactionHash;
   }
 );
 
@@ -53,6 +54,10 @@ export const nftFaucetSlice = createSlice({
       })
       .addCase(mintAsync.fulfilled, (state, action) => {
         state.pendingTx = false;
+      })
+      .addCase(mintAsync.rejected, (state, action) => {
+        state.pendingTx = false;
+        state.error = "There was an error with the transaction"
       })
   },
 });

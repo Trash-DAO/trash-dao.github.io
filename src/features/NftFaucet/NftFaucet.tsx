@@ -3,6 +3,7 @@ import React from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { nftFaucetAddress } from './nftFaucetAPI';
 import { mintAsync, selectMints, selectPendingTx } from './nftFaucetSlice';
+import styles from './NftFaucet.module.css';
 
 export function NftFaucet() {
   const pendingTx = useAppSelector(selectPendingTx);
@@ -24,13 +25,13 @@ export function NftFaucet() {
       {mints?.length > 0 ?
         <>
           <h3>Recent mints:</h3>
-          <ul>
+          <div className={styles.mintUl}>
             {mints?.map(mint =>
-              <li>
-                <img src={mint.tokenUri} alt={`${mint.tokenId}`} />
+              <div className={styles.mintLi} key={mint.tokenId}>
+                <img className={styles.mintImg} src={mint.tokenUri} alt={`${mint.tokenId}`} />
                 Token ID: {mint.tokenId}
-              </li>)}
-          </ul>
+              </div>)}
+          </div>
         </> : null}
       <p>Check your Rinkeby NFTs in <a target="_blank" rel="noreferrer" href="https://testnets.opensea.io/account">Rinkeby OpenSea</a></p>
     </div>

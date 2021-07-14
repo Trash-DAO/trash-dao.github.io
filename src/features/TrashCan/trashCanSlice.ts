@@ -22,8 +22,8 @@ export const safeTransferFromAsync = createAsyncThunk(
       alreadyListening = true;
     }
     const tx = await safeTransferFrom(arg.contractAddress, +arg.tokenId);
-    const receipt = await tx.wait();
-    return receipt.transactionHash;
+    // const receipt = await tx.wait();
+    // return receipt.transactionHash;
   }
 );
 

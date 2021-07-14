@@ -1,14 +1,11 @@
-import { ethers } from "ethers";
+import Web3 from "web3";
 
 declare global {
   interface Window { ethereum: any; }
 }
 
-export const provider = new ethers.providers.Web3Provider(window.ethereum);
-export const signer = provider?.getSigner();
-
 export const hasWallet = () => {
-  return Promise.resolve(window.ethereum);
+  return !!window.ethereum;
 }
 
 export const isWalletConnected = () => {
@@ -16,17 +13,22 @@ export const isWalletConnected = () => {
 }
 
 export const connectWallet = async () => {
-  await window.ethereum.enable();
+  await window.ethereum?.send('eth_requestAccounts');
+  const web3 = new Web3(window.ethereum);
+  const network = await web3.eth.net.getNetworkType();
+  const accounts = await web3.eth.getAccounts();
   return {
-    address: await signer.getAddress(),
-    network: getNetwork()
+    address: accounts[0],
+    network
   }
 }
 
-export const getNetwork = () => {
-  if (window.ethereum.networkVersion === "4") {
-    return "Rinkeby";
-  } else {
-    return "";
-  }
+export const addWalletListener = (callback: any) => {
+  window.ethereum.on("accountsChanged", (accounts: any) => {
+    if (accounts.length > 0) {
+      callback(accounts[0]);
+    } else {
+      callback();
+    }
+  });
 }

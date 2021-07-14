@@ -1,43 +1,59 @@
-import { ethers } from "ethers";
-import { provider, signer } from "../connectWallet/connectWalletAPI";
+// import { ethers } from "ethers";
+// import { provider, signer } from "../connectWallet/connectWalletAPI";
+import Web3 from "web3";
+import trashCanAbi from "./trashCanAbi.json";
+import erc721Abi from "./erc721Abi.json";
+import { AbiItem } from "web3-utils";
 
 declare global {
   interface Window { ethereum: any; }
 }
 
+export interface NftDump {
+  contractAddress: string,
+  tokenId: number;
+}
+
 export const trashCanAddress = "0x370Eff7d2Ac0ACf3E7713Ec8beC8079e825EB0d4";
 
-const nftAbi = [
-  "function safeTransferFrom(address _from, address _to, uint256 _tokenId)",
-  "event Transfer(address indexed from, address indexed to, uint tokenId)"
-];
+let trashCanContract: any;
+const getTrashCanContract = async () => {
+  const web3 = new Web3(window.ethereum);
+  if (!trashCanContract) {
+    trashCanContract = await new web3.eth.Contract(trashCanAbi as AbiItem[], trashCanAddress);
+  }
+  return trashCanContract;
+}
 
-export const listenForTransfers = async (contractAddress: string, callback: () => void) => {
-  const nftContract = new ethers.Contract(contractAddress, nftAbi, provider);
-  // const myAddress = await signer.getAddress();
-  // console.log("myAddress", myAddress)
-  // const filter = nftFaucetContract.filters.Transfer(null, myAddress)
-  // console.log("filter", filter)
-  // nftFaucetContract.on(filter, async (from, to, tokenId, event) => {
-  //   console.log("calling", myAddress)
-  //   const tokenUri = await fetchTokenUri(tokenId);
-  //   console.log("tokenUri", tokenUri)
-  //   callback({
-  //     tokenId,
-  //     tokenUri,
-  //   } as NftMint);
-  // });
-  nftContract.on("Transfer", (from, to, tokenId, event) => {
-    console.log(`${from} sent ${tokenId} to ${to}`);
-    callback();
-});
-  console.log("done listening")
+const getErc721AbiContract = async (contractAddress: string) => {
+  const web3 = new Web3(window.ethereum);
+  return await new web3.eth.Contract(erc721Abi as AbiItem[], contractAddress);
+}
+
+
+export const listenForTransfers = async (contractAddress: string, callback: (dump: NftDump) => void) => {
+  const nftContract = await getErc721AbiContract(contractAddress);
+  nftContract.events.Transfer({ filter: { from: window.ethereum.selectedAddress, to: trashCanAddress } }, async function (error: any, event: any) {
+    console.log("Transfer", event);
+    if (error) {
+      console.error("listenForTransfers", error);
+      // callback(error);
+    }
+    const tokenId = event.returnValues[2];
+    callback({
+      contractAddress,
+      tokenId,
+    });
+  });
 };
 
 export const safeTransferFrom = async (contractAddress: string, tokenId: number) => {
-  const nftContract = new ethers.Contract(contractAddress, nftAbi, provider);
-  const nftWithSigner = nftContract.connect(signer);
-  const myAddress = await signer.getAddress();
-  return await nftWithSigner.safeTransferFrom(myAddress, trashCanAddress, tokenId);
+  const nftContract = await getErc721AbiContract(contractAddress);
+  return await nftContract.methods.safeTransferFrom(window.ethereum.selectedAddress, trashCanAddress, tokenId).send({ from: window.ethereum.selectedAddress }, (error: any, tx: string) => {
+    if (error) {
+      console.error("safeTransferFrom", error);
+    }
+    console.log("safeTransferFrom", tx)
+  });
 }
 

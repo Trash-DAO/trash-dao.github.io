@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import connectWalletReducer from '../features/connectWallet/connectWalletSlice';
+import connectWalletReducer, { hasWalletAsync } from '../features/connectWallet/connectWalletSlice';
 import nftFaucetReducer from '../features/NftFaucet/nftFaucetSlice';
 import trashCanReducer from '../features/TrashCan/trashCanSlice';
 
@@ -19,3 +19,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+store.dispatch(hasWalletAsync());
+

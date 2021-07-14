@@ -3,3 +3,20 @@
   align-items: center;
   justify-content: center;
 }
+.mintImg {
+  border: black 1px solid;
+  border-radius: 3px;
+  box-shadow: 10px 5px 5px grey;
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+.mintLi {
+  list-style-type: none;
+  width: 100px;
+}
+.mintUl {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat( auto-fill, minmax(min(calc(180px + 12vmin), 100%), 1fr) );
+}
